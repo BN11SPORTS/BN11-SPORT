@@ -1,0 +1,32 @@
+const channelUrls = {
+  "channel1": "ppradio.b-cdn.net/LiveApp/streams/w3g3EYjBtqgJ1677679288037.m3u8#Intent;package=com.genuine.leone;scheme=http;S.title=New%20title;type=video/mp4;end",
+  "channel2": "ppradio.b-cdn.net/LiveApp/streams/GZ7f8XBrt4dI1677679357590.m3u8#Intent;package=com.genuine.leone;scheme=http;S.title=New%20title;type=video/mp4;end",
+  "channel3": "ppradio.b-cdn.net/LiveApp/streams/rHEBIW7pjQLU1677679374164.m3u8#Intent;package=com.genuine.leone;scheme=http;S.title=New%20title;type=video/mp4;end"
+};
+
+// Assuming you have the same channelUrls as before
+
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll(".mm-btn");
+
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", function () {
+      const channelKey = `channel${index + 1}`;
+      const channelURL = channelUrls[channelKey];
+
+      if (channelURL) {
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        if (isAndroid) {
+          const networkStreamPlayerURL = `intent://${channelURL}`;
+          const iframe = createHiddenIframe(networkStreamPlayerURL);
+          document.body.appendChild(iframe);
+          setTimeout(() => document.body.removeChild(iframe), 1000);
+        } else {
+          alert("Available on Android devices only.");
+        }
+      } else {
+        alert("Invalid channel key.");
+      }
+    });
+  });
+});
